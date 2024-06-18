@@ -12,13 +12,16 @@ export const valueDensities = ["diffuse", "concentrated"];
 export const humanImpacts = ["low", "medium", "high", "very high"];
 
 // Calculate the priority based on the provided parameters
+// FYI: https://insights.sei.cmu.edu/documents/606/2021_019_001_653461.pdf
 export function getPriority(exploitation: string, exposure: string, utility: string, humanImpact: string): string {
     if (exploitation === "active") {
         if (exposure === "open") {
-            if (utility === "super effective" && humanImpact === "very high") return "immediate";
-            if (utility === "efficient" && humanImpact === "very high") return "immediate";
-            if (utility === "efficient" && humanImpact === "high") return "immediate";
-            if (utility === "laborious" && humanImpact === "very high") return "immediate";
+            if ((utility === "super effective" || utility === "efficient" || utility === "laborious") && humanImpact === "very high") {
+                return "immediate";
+            }
+            if (utility === "efficient" && humanImpact === "high") {
+                return "immediate";
+            }
             return "out-of-cycle";
         }
 
